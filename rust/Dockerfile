@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && rm -rf /var/lib/apt/lists/*
 
 ENV GOPATH /usr/local/go/bin
+ENV PROTOC /usr/bin/protoc
 ENV PATH $PATH:$GOPATH:/usr/local/go/bin/bin
 
 RUN wget --progress=dot:giga https://go.dev/dl/go1.19.linux-amd64.tar.gz &&\
