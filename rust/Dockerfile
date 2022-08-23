@@ -28,7 +28,7 @@ RUN wget --progress=dot:giga https://go.dev/dl/go1.19.linux-amd64.tar.gz &&\
 WORKDIR /app
 RUN wget --progress=dot:giga https://ja.osdn.net/dl/unidic/unidic-mecab-2.1.2_src.zip &&\
     unzip unidic-mecab-2.1.2_src.zip &&\
-    rm unidic-mecab-2.1.2_src.zip &&\
+    rm unidic-mecab-2.1.2_src.zip
 WORKDIR /app/unidic-mecab-2.1.2_src
 RUN ./configure &&\
     make &&\
