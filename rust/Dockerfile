@@ -33,3 +33,4 @@ WORKDIR /app/unidic-mecab-2.1.2_src
 RUN ./configure &&\
     make &&\
     make install
+WORKDIR /
