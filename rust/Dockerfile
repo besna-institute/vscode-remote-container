@@ -17,6 +17,17 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     mecab-ipadic-utf8 \
     && rm -rf /var/lib/apt/lists/*
 
+# See https://www.terraform.io/downloads
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN wget --progress=dot:giga -O - https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list \
+    && apt-get update && apt-get install --no-install-recommends -y terraform \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget --progress=dot:giga https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh \
+    && source /install_linux.sh \
+    && rm -f /install_linux.sh
+
 ENV GOPATH /usr/local/go/bin
 ENV PROTOC /usr/bin/protoc
 ENV PATH $PATH:$GOPATH:/usr/local/go/bin/bin
