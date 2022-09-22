@@ -24,7 +24,9 @@ RUN wget --progress=dot:giga -O - https://apt.releases.hashicorp.com/gpg | gpg -
     && apt-get update && apt-get install --no-install-recommends -y terraform \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget --progress=dot:giga https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+RUN wget --progress=dot:giga https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh \
+    && source /install_linux.sh \
+    && rm -f /install_linux.sh
 
 ENV GOPATH /usr/local/go/bin
 ENV PROTOC /usr/bin/protoc
