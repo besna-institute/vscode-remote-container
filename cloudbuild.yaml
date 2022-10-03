@@ -3,3 +3,4 @@ steps:
   args: [ 'build', '-t', 'asia-northeast1-docker.pkg.dev/besna-nlp-development/vscode-remote-container/rust', './rust' ]
 images:
 - 'asia-northeast1-docker.pkg.dev/besna-nlp-development/vscode-remote-container/rust'
+timeout: 3600s
