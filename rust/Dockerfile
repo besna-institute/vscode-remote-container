@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     mecab \
     libmecab-dev \
     mecab-ipadic-utf8 \
+    apt-transport-https \
+    gnupg \
     && rm -rf /var/lib/apt/lists/*
 
 # See https://www.terraform.io/downloads
@@ -36,6 +38,16 @@ RUN wget --progress=dot:giga https://go.dev/dl/go1.19.linux-amd64.tar.gz &&\
     tar -C /usr/local -xzf go1.19.linux-amd64.tar.gz &&\
     rm go1.19.linux-amd64.tar.gz &&\
     /usr/local/go/bin/go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+
+# Install Bazel
+RUN wget --progress=dot:giga -O - https://bazel.build/bazel-release.pub.gpg | gpg --dearmor | tee /usr/share/keyrings/bazel-archive-keyring.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
+    && apt-get update -y && apt-get install --no-install-recommends -y bazel \
+    && rm -rf /var/lib/apt/lists/* \
+    && go install github.com/bazelbuild/buildtools/buildifier@latest
+USER vscode
+RUN cargo install cargo-raze
+USER root
 
 WORKDIR /app
 RUN wget --progress=dot:giga https://ja.osdn.net/dl/unidic/unidic-mecab-2.1.2_src.zip &&\
