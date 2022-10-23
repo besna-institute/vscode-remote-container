@@ -12,10 +12,31 @@ RUN wget --progress=dot:giga -O /usr/local/bin/hadolint https://github.com/hadol
 RUN apt-get update && apt-get install --no-install-recommends -y \
     cmake \
     protobuf-compiler \
-    mecab \
-    libmecab-dev \
-    mecab-ipadic-utf8 \
+    build-essential \
+    libreadline-dev \
+    libncursesw5-dev \
+    libssl-dev \
+    libsqlite3-dev \
+    libgdbm-dev \
+    libbz2-dev \
+    liblzma-dev \
+    zlib1g-dev \
+    uuid-dev \
+    libffi-dev \
+    libdb-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# See https://www.terraform.io/downloads
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN wget --progress=dot:giga -O - https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list \
+    && apt-get update && apt-get install --no-install-recommends -y terraform \
+    && rm -rf /var/lib/apt/lists/*
+
+# shellcheck source=/dev/null
+RUN wget --progress=dot:giga https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh \
+    && source /install_linux.sh \
+    && rm -f /install_linux.sh
 
 ENV GOPATH /usr/local/go/bin
 ENV PROTOC /usr/bin/protoc
@@ -27,11 +48,12 @@ RUN wget --progress=dot:giga https://go.dev/dl/go1.19.linux-amd64.tar.gz &&\
     /usr/local/go/bin/go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 
 WORKDIR /app
-RUN wget --progress=dot:giga https://ja.osdn.net/dl/unidic/unidic-mecab-2.1.2_src.zip &&\
-    unzip unidic-mecab-2.1.2_src.zip &&\
-    rm unidic-mecab-2.1.2_src.zip
-WORKDIR /app/unidic-mecab-2.1.2_src
-RUN ./configure &&\
+RUN wget --progress=dot:giga --no-check-certificate https://www.python.org/ftp/python/3.9.15/Python-3.9.15.tgz &&\
+    tar -xf Python-3.9.15.tgz &&\
+    rm Python-3.9.15.tgz
+WORKDIR /app/Python-3.9.15
+RUN ./configure --enable-optimizations &&\
     make &&\
     make install
+
 WORKDIR /
