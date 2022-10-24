@@ -12,18 +12,6 @@ RUN wget --progress=dot:giga -O /usr/local/bin/hadolint https://github.com/hadol
 RUN apt-get update && apt-get install --no-install-recommends -y \
     cmake \
     protobuf-compiler \
-    build-essential \
-    libreadline-dev \
-    libncursesw5-dev \
-    libssl-dev \
-    libsqlite3-dev \
-    libgdbm-dev \
-    libbz2-dev \
-    liblzma-dev \
-    zlib1g-dev \
-    uuid-dev \
-    libffi-dev \
-    libdb-dev \
     apt-transport-https \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
