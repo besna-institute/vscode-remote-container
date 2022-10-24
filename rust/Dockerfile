@@ -12,9 +12,6 @@ RUN wget --progress=dot:giga -O /usr/local/bin/hadolint https://github.com/hadol
 RUN apt-get update && apt-get install --no-install-recommends -y \
     cmake \
     protobuf-compiler \
-    mecab \
-    libmecab-dev \
-    mecab-ipadic-utf8 \
     apt-transport-https \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
@@ -26,6 +23,7 @@ RUN wget --progress=dot:giga -O - https://apt.releases.hashicorp.com/gpg | gpg -
     && apt-get update && apt-get install --no-install-recommends -y terraform \
     && rm -rf /var/lib/apt/lists/*
 
+# shellcheck source=/dev/null
 RUN wget --progress=dot:giga https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh \
     && source /install_linux.sh \
     && rm -f /install_linux.sh
@@ -50,11 +48,12 @@ RUN cargo install cargo-raze
 USER root
 
 WORKDIR /app
-RUN wget --progress=dot:giga https://ja.osdn.net/dl/unidic/unidic-mecab-2.1.2_src.zip &&\
-    unzip unidic-mecab-2.1.2_src.zip &&\
-    rm unidic-mecab-2.1.2_src.zip
-WORKDIR /app/unidic-mecab-2.1.2_src
-RUN ./configure &&\
+RUN wget --progress=dot:giga --no-check-certificate https://www.python.org/ftp/python/3.9.15/Python-3.9.15.tgz &&\
+    tar -xf Python-3.9.15.tgz &&\
+    rm Python-3.9.15.tgz
+WORKDIR /app/Python-3.9.15
+RUN ./configure --enable-optimizations &&\
     make &&\
     make install
+
 WORKDIR /
