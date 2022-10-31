@@ -47,6 +47,7 @@ USER vscode
 RUN cargo install cargo-raze
 USER root
 
+# Install Python
 WORKDIR /app
 RUN wget --progress=dot:giga --no-check-certificate https://www.python.org/ftp/python/3.9.15/Python-3.9.15.tgz &&\
     tar -xf Python-3.9.15.tgz &&\
@@ -55,5 +56,13 @@ WORKDIR /app/Python-3.9.15
 RUN ./configure --enable-optimizations &&\
     make &&\
     make install
+WORKDIR /app
+
+# Install gcloud SDK
+# https://cloud.google.com/sdk/docs/install#linux
+RUN wget --progress=dot:giga --no-check-certificate https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-407.0.0-linux-x86_64.tar.gz &&\
+    tar -xf google-cloud-cli-407.0.0-linux-x86_64.tar.gz &&\
+    /app/google-cloud-sdk/install.sh
+ENV PATH $PATH:$GOPATH:/app/google-cloud-sdk/bin
 
 WORKDIR /
