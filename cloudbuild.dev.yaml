@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'asia-northeast1-docker.pkg.dev/besna-nlp-development/vscode-remote-container/dev:rust-$SHORT_SHA', './rust' ]
+images:
+- 'asia-northeast1-docker.pkg.dev/besna-nlp-development/vscode-remote-container/dev:rust-$SHORT_SHA'
+timeout: 5400s
