@@ -3,7 +3,7 @@
 {
     "name": "Debian",
     "build": {
-        "dockerfile": "Dockerfile",
+        "dockerfile": "Dockerfile"
     },
 
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -19,9 +19,13 @@
     "remoteUser": "vscode",
     "customizations": {
         "vscode": {
+            "settings": {
+                "editor.renderWhitespace": "all"
+            },
             "extensions": [
                 "exiasr.hadolint",
-                "EditorConfig.EditorConfig"
+                "EditorConfig.EditorConfig",
+                "foxundermoon.shell-format"
             ]
         }
     }
